@@ -1,42 +1,47 @@
 package com.codecool.todoapp.model;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class TodoDao {
 
-    private static final List<Todo> DATA = new ArrayList<>();
+    private final List<Todo> DATA = new ArrayList<>();
 
-    public static void add(Todo todo) {
+    public void add(Todo todo) {
         DATA.add(todo);
     }
 
-    public static Todo find(String id) {
-        return DATA.stream().filter(t -> t.getId().equals(id)).findFirst().orElse(null);
+    public Todo find(Long id) {
+        return DATA.stream().filter(t -> t.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 
-    public static void update(String id, String title) {
+    public void update(Long id, String title) {
         find(id).setTitle(title);
     }
 
-    public static List<Todo> ofStatus(String statusString) {
+    public List<Todo> ofStatus(String statusString) {
         return (statusString == null || statusString.isEmpty()) ? DATA : ofStatus(Status.valueOf(statusString.toUpperCase()));
     }
 
-    public static List<Todo> ofStatus(Status status) {
+    public List<Todo> ofStatus(Status status) {
         return DATA.stream().filter(t -> t.getStatus().equals(status)).collect(Collectors.toList());
     }
 
-    public static void remove(String id) {
+    public void remove(Long id) {
         DATA.remove(find(id));
     }
 
-    public static void removeCompleted() {
-        ofStatus(Status.COMPLETE).forEach(t -> TodoDao.remove(t.getId()));
+    public void removeCompleted() {
+        ofStatus(Status.COMPLETE).forEach(t -> this.remove(t.getId()));
     }
 
-    public static void toggleStatus(String id, boolean isComplete) {
+    public void toggleStatus(Long id, boolean isComplete) {
         Todo todo = find(id);
         if (isComplete) {
             todo.setStatus(Status.COMPLETE);
@@ -45,11 +50,11 @@ public class TodoDao {
         }
     }
 
-    public static void toggleAll(boolean complete) {
-        TodoDao.all().forEach(t -> t.setStatus(complete ? Status.COMPLETE : Status.ACTIVE));
+    public void toggleAll(boolean complete) {
+        this.all().forEach(t -> t.setStatus(complete ? Status.COMPLETE : Status.ACTIVE));
     }
 
-    public static List<Todo> all() {
+    public List<Todo> all() {
         return DATA;
     }
 }
