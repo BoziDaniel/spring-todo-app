@@ -15,17 +15,21 @@ import javax.persistence.Id;
 @Builder
 @Entity
 public class Todo {
-
-    private String title;
     @Id
     @GeneratedValue
-    private String id;
+    private Long id;
+
+    private String title;
+
     private Status status;
+
+    public Todo(String title, Status status) {
+        this.status = status;
+        this.title = title;
+    }
 
     public boolean isCompleted() {
         return this.status == Status.COMPLETE;
     }
-
-
 
 }
