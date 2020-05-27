@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,8 @@ public class TodoDao {
         find(id).setTitle(title);
     }
 
-    public List<Todo> ofStatus(String statusString) {
+    public List<Todo> ofStatus( String statusString) {
+        System.out.println(statusString);
         return (statusString == null || statusString.isEmpty()) ? DATA : ofStatus(Status.valueOf(statusString.toUpperCase()));
     }
 
