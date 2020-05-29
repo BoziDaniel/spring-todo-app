@@ -28,6 +28,11 @@ public class Todo {
         this.title = title;
     }
 
+    public Todo(String title) {
+        this.status = Status.ACTIVE;
+        this.title = title;
+    }
+
     public boolean isCompleted() {
         return this.status == Status.COMPLETE;
     }

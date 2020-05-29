@@ -3,6 +3,7 @@ package com.codecool.todoapp;
 import com.codecool.todoapp.model.Status;
 import com.codecool.todoapp.model.Todo;
 import com.codecool.todoapp.model.TodoDao;
+import com.codecool.todoapp.repository.TodoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +21,16 @@ public class TodoAppApplication {
     }
 
     private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(TodoAppApplication.class);
-    @Autowired
-    private TodoDao todoDao;
 
+    @Autowired
+    private TodoRepository todoRepository;
     @Bean
     @Profile("dev")
     public CommandLineRunner init() {
         return args -> {
-            todoDao.add(new Todo("first item", Status.ACTIVE));
-            todoDao.add(new Todo("2 item", Status.ACTIVE));
-            todoDao.add(new Todo("3 item", Status.ACTIVE));
-            System.out.println(todoDao.toString());
+            todoRepository.save(new Todo("first item", Status.ACTIVE));
+            todoRepository.save(new Todo("2 item", Status.COMPLETE));
+            todoRepository.save(new Todo("3 item", Status.ACTIVE));
         };
 
     }
